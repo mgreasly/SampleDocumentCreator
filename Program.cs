@@ -5,10 +5,9 @@ namespace SampleDocumentCreator
 {
     internal class Program
     {
-
         static void Main(string[] args)
         {
-            GenerateArticles(9);
+            GenerateArticles(5);
             Console.WriteLine("Done...");
             Console.ReadKey();
         }
@@ -16,42 +15,33 @@ namespace SampleDocumentCreator
         static void GenerateArticles(int count)
         {
             var rnd = new Random();
-            var fileNames = new List<string>();
             for (var i = 0; i < count; i++)
             {
                 var r = rnd.Next(0, 3);
-                switch (r)
-                {
+                switch(r){
                     case 0:
-                        using (var article = new Document(ArticleType.Word))
+                        using (var article = new ExcelDocument())
                         {
                             article.GetRandomArticle();
                             article.SaveArticleToFile();
-                            fileNames.Add(article.FileName);
                         }
                         break;
                     case 1:
-                        using (var article = new Document(ArticleType.Excel))
+                        using (var article = new PowerPointDocument())
                         {
                             article.GetRandomArticle();
                             article.SaveArticleToFile();
-                            fileNames.Add(article.FileName);
                         }
                         break;
-                    case 2:
-                        using (var article = new Document(ArticleType.PowerPoint))
+                    default:
+                        using (var article = new WordDocument())
                         {
                             article.GetRandomArticle();
                             article.SaveArticleToFile();
-                            fileNames.Add(article.FileName);
                         }
                         break;
                 }
             }
-
-            Console.WriteLine();
-            foreach (var name in fileNames) Console.WriteLine($"Completed {name}");
-
         }
     }
 }
