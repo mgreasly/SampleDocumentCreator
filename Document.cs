@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Office.Core;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 using System.Net.Http;
 
 namespace SampleDocumentCreator
@@ -16,6 +16,7 @@ namespace SampleDocumentCreator
         object _missing = System.Reflection.Missing.Value;
         private Microsoft.Office.Interop.Word.Application _word;
         private Microsoft.Office.Interop.Excel.Application _excel;
+        private Microsoft.Office.Interop.PowerPoint.Application _ppt;
 
         public Document(ArticleType type)
         {
@@ -34,6 +35,12 @@ namespace SampleDocumentCreator
                     {
                         _word = new Microsoft.Office.Interop.Word.Application();
                         _word.Visible = false;
+                    }
+                    break;
+                case ArticleType.PowerPoint:
+                    if (_ppt == null)
+                    {
+                        _ppt = new Microsoft.Office.Interop.PowerPoint.Application();
                     }
                     break;
                 default:
@@ -55,6 +62,11 @@ namespace SampleDocumentCreator
                 _word.Quit();
                 _word = null;
             }
+            if (_ppt != null)
+            {
+                foreach (Microsoft.Office.Interop.PowerPoint.Presentation p in _ppt.Presentations) { p.Close(); }
+                _ppt.Quit();
+            }
         }
 
         public string SaveArticleToFile()
@@ -72,6 +84,11 @@ namespace SampleDocumentCreator
                     FileName = $"{Title}.docx";
                     doc.SaveAs2(FullPath, Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatXMLDocument, CompatibilityMode: Microsoft.Office.Interop.Word.WdCompatibilityMode.wdWord2013);
                     Console.WriteLine($"Saved {FileName}..");
+                    return FileName;
+                case ArticleType.PowerPoint:
+                    var presentation = GeneratePowerPointDocument(_ppt);
+                    FileName = $"{Title}.pptx";
+                    presentation.SaveAs(FullPath, Microsoft.Office.Interop.PowerPoint.PpSaveAsFileType.ppSaveAsDefault, MsoTriState.msoTrue);
                     return FileName;
                 default:
                     return string.Empty;
@@ -105,10 +122,26 @@ namespace SampleDocumentCreator
             {
                 for (int col = 0; col < 10; col++)
                 {
-                    worksheet.Cells[row + 2, col + 1] = words[(10 * row) + col];
+                    var index = (10 * row) + col;
+                    if (index < words.Length) worksheet.Cells[row + 2, col + 1] = words[index];
                 }
             }
             return workbook;
+        }
+        private Microsoft.Office.Interop.PowerPoint.Presentation GeneratePowerPointDocument(Microsoft.Office.Interop.PowerPoint.Application ppt)
+        {
+            //var presentation = ppt.Presentations.Add(MsoTriState.msoTrue);
+            var presentation = ppt.Presentations.Add(MsoTriState.msoFalse);
+
+            var slide = presentation.Slides.AddSlide(1, presentation.SlideMaster.CustomLayouts[Microsoft.Office.Interop.PowerPoint.PpSlideLayout.ppLayoutText]);
+            var range = slide.Shapes[1].TextFrame.TextRange;
+            range.Text = Title;
+            range.Font.Size = 44;
+
+            range = slide.Shapes[2].TextFrame.TextRange;
+            range.Text = Extract;
+
+            return presentation;
         }
 
         public void GetRandomArticle()
@@ -118,6 +151,7 @@ namespace SampleDocumentCreator
             {
                 case ArticleType.Excel: minExtractLength = 100; break;
                 case ArticleType.Word: minExtractLength = 800; break;
+                default: minExtractLength = 200; break;
             }
             var url = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=random&grnnamespace=0&prop=extracts&explaintext=1";
             while (Extract.Length < minExtractLength)
@@ -160,6 +194,7 @@ namespace SampleDocumentCreator
     {
         Unknown = 0,
         Excel,
+        PowerPoint,
         Word
     }
 }

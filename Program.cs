@@ -8,7 +8,7 @@ namespace SampleDocumentCreator
 
         static void Main(string[] args)
         {
-            GenerateArticles(10);
+            GenerateArticles(9);
             Console.WriteLine("Done...");
             Console.ReadKey();
         }
@@ -19,7 +19,7 @@ namespace SampleDocumentCreator
             var fileNames = new List<string>();
             for (var i = 0; i < count; i++)
             {
-                var r = rnd.Next(0, 2);
+                var r = rnd.Next(0, 3);
                 switch (r)
                 {
                     case 0:
@@ -32,6 +32,14 @@ namespace SampleDocumentCreator
                         break;
                     case 1:
                         using (var article = new Document(ArticleType.Excel))
+                        {
+                            article.GetRandomArticle();
+                            article.SaveArticleToFile();
+                            fileNames.Add(article.FileName);
+                        }
+                        break;
+                    case 2:
+                        using (var article = new Document(ArticleType.PowerPoint))
                         {
                             article.GetRandomArticle();
                             article.SaveArticleToFile();
