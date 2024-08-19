@@ -47,7 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Document.cs" />
+    <Compile Include="ArticleExtract.cs" />
+    <Compile Include="ExcelFile.cs" />
+    <Compile Include="LinkGenerator.cs" />
+    <Compile Include="PowerPointFile.cs" />
+    <Compile Include="WordFile.cs" />
+    <Compile Include="File.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
