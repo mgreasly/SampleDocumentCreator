@@ -16,11 +16,10 @@ namespace SampleDocumentCreator
             {
                 var response = client.GetAsync(url).Result;
                 if (!response.IsSuccessStatusCode) throw new Exception(response.StatusCode.ToString());
-                var content = response.Content.ReadAsStringAsync().Result;
 
+                var content = response.Content.ReadAsStringAsync().Result;
                 var o = JObject.Parse(content);
                 var title = GetPropertyValue(o, "title");
-
                 var extract = GetPropertyValue(o, "extract");
                 if (extract.IndexOf("==") > 0) extract = extract.Substring(0, extract.IndexOf("=="));
                 extract = extract.Trim();

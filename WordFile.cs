@@ -7,6 +7,7 @@ namespace SampleDocumentCreator
     {
         private Application _word;
         private Document _doc;
+        public int MinLength => 800;
 
         public WordFile()
         {
@@ -63,8 +64,15 @@ namespace SampleDocumentCreator
         public string SaveArticleToFile()
         {
             FileName = $"{GetValidFileName(ArticleExtract.Title)}.docx";
-            _doc.SaveAs2(FullPath, WdSaveFormat.wdFormatXMLDocument, CompatibilityMode: WdCompatibilityMode.wdWord2013);
-            Console.WriteLine($"Saved {FileName}..");
+            try
+            {
+                _doc.SaveAs2(FullPath, WdSaveFormat.wdFormatXMLDocument, CompatibilityMode: WdCompatibilityMode.wdWord2013);
+                Console.WriteLine($"Saved {FullPath}..");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{e.Source} - {e.Message}");
+            }
             return FileName;
         }
     }

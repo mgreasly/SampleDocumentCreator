@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using System;
 
 namespace SampleDocumentCreator
 {
@@ -7,10 +8,14 @@ namespace SampleDocumentCreator
     {
         private Application _ppt;
         private Presentation _presentation;
+        public int MinLength => 200;
 
         public PowerPointFile()
         {
-            _ppt = new Application();
+            if (_ppt == null)
+            {
+                _ppt = new Application();
+            }
         }
 
         public void Dispose()
@@ -48,7 +53,15 @@ namespace SampleDocumentCreator
         public string SaveArticleToFile()
         {
             FileName = $"{GetValidFileName(ArticleExtract.Title)}.pptx";
-            _presentation.SaveAs(FullPath, PpSaveAsFileType.ppSaveAsDefault, MsoTriState.msoTrue);
+            try
+            {
+                _presentation.SaveAs(FullPath, PpSaveAsFileType.ppSaveAsDefault, MsoTriState.msoTrue);
+                Console.WriteLine($"Saved {FullPath}..");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{e.Source} - {e.Message}");
+            }
             return FileName;
         }
     }

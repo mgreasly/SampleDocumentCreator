@@ -9,11 +9,15 @@ namespace SampleDocumentCreator
         private Application _excel;
         private Workbook _wkbk;
         private Worksheet _wkst;
+        public int MinLength => 400;
 
         public ExcelFile()
         {
-            _excel = new Application();
-            _excel.Visible = false;
+            if (_excel == null)
+            {
+                _excel = new Application();
+                _excel.Visible = false;
+            }
         }
 
         public void Dispose()
@@ -60,8 +64,15 @@ namespace SampleDocumentCreator
         public string SaveArticleToFile()
         {
             FileName = $"{GetValidFileName(ArticleExtract.Title)}.xlsx";
-            _wkbk.SaveAs(FullPath, XlFileFormat.xlOpenXMLWorkbook, _missing, _missing, _missing, _missing, XlSaveAsAccessMode.xlExclusive, _missing, _missing, _missing, _missing, _missing);
-            Console.WriteLine($"Saved {FileName}..");
+            try
+            {
+                _wkbk.SaveAs(FullPath, XlFileFormat.xlOpenXMLWorkbook, _missing, _missing, _missing, _missing, XlSaveAsAccessMode.xlExclusive, _missing, _missing, _missing, _missing, _missing);
+                Console.WriteLine($"Saved {FullPath}..");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{e.Source} - {e.Message}");
+            }
             return FileName;
         }
 

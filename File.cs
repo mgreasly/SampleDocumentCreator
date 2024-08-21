@@ -11,6 +11,9 @@ namespace SampleDocumentCreator
         ArticleExtract ArticleExtract { get; set; }
         string FileName { get; }
         string FullPath { get; }
+        int MinLength { get; }
+        void GenerateDocument();
+        void AddLinks();
         string SaveArticleToFile();
     }
 
@@ -31,56 +34,4 @@ namespace SampleDocumentCreator
             return f;
         }
     }
-    /*
-        public class PowerPointDocument : Document, IDocument
-        {
-            private Microsoft.Office.Interop.PowerPoint.Application _ppt;
-
-            public PowerPointDocument()
-            {
-            }
-
-            public void Dispose()
-            {
-                foreach (Microsoft.Office.Interop.PowerPoint.Presentation p in _ppt.Presentations) { p.Close(); }
-                _ppt.Quit();
-            }
-
-            public void GetRandomArticle()
-            {
-                var minExtractLength = 200;
-                while (Extract.Length < minExtractLength)
-                {
-                    var a = Document.DownloadArticle();
-                    this.Extract = a.Extract;
-                    this.Title = a.Title;
-                }
-                return;
-            }
-
-            public string SaveArticleToFile()
-            {
-                var presentation = GenerateDocument();
-                FileName = $"{Title}.pptx";
-                presentation.SaveAs(FullPath, Microsoft.Office.Interop.PowerPoint.PpSaveAsFileType.ppSaveAsDefault, MsoTriState.msoTrue);
-                return FileName;
-            }
-
-            private Microsoft.Office.Interop.PowerPoint.Presentation GenerateDocument()
-            {
-                //var presentation = ppt.Presentations.Add(MsoTriState.msoTrue);
-                var presentation = _ppt.Presentations.Add(MsoTriState.msoFalse);
-
-                var slide = presentation.Slides.AddSlide(1, presentation.SlideMaster.CustomLayouts[Microsoft.Office.Interop.PowerPoint.PpSlideLayout.ppLayoutText]);
-                var range = slide.Shapes[1].TextFrame.TextRange;
-                range.Text = Title;
-                range.Font.Size = 44;
-
-                range = slide.Shapes[2].TextFrame.TextRange;
-                range.Text = Extract;
-
-                return presentation;
-            }
-        }
-    */
 }
