@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace SampleDocumentCreator
@@ -59,6 +60,12 @@ namespace SampleDocumentCreator
                 string address = LinkGenerator.RandomLink();
                 var link = _wkst.Hyperlinks.Add(range, address, TextToDisplay: words[index]);
             }
+        }
+
+        public string SaveArticleToFile(string path)
+        {
+            this.Folder = path;
+            return SaveArticleToFile();
         }
 
         public string SaveArticleToFile()

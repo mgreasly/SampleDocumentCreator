@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace SampleDocumentCreator
 {
@@ -6,12 +7,13 @@ namespace SampleDocumentCreator
     {
         static void Main(string[] args)
         {
-            GenerateArticles(1);
+            var path = @"C:\Users\marcus.greasly\Desktop\Sample Documents\2024-09-23";
+            GenerateArticles(2, path);
             Console.WriteLine("Done...");
             Console.ReadKey();
         }
 
-        static void GenerateArticles(int count)
+        static void GenerateArticles(int count, string path)
         {
             var rnd = new Random();
             for (var i = 0; i < count; i++)
@@ -32,7 +34,7 @@ namespace SampleDocumentCreator
                 file.ArticleExtract = article;
                 file.GenerateDocument();
                 file.AddLinks();
-                file.SaveArticleToFile();
+                file.SaveArticleToFile(path);
             }
         }
     }

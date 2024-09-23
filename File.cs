@@ -14,6 +14,7 @@ namespace SampleDocumentCreator
         int MinLength { get; }
         void GenerateDocument();
         void AddLinks();
+        string SaveArticleToFile(string path);
         string SaveArticleToFile();
     }
 
@@ -23,7 +24,8 @@ namespace SampleDocumentCreator
         public string Title { get; set; } = string.Empty;
         public string Extract { get; set; } = string.Empty;
         public string FileName { get; internal set; } = string.Empty;
-        public string FullPath { get { return $"{Environment.CurrentDirectory}\\{FileName}"; } }
+        public string Folder { get; set; } = Environment.CurrentDirectory;
+        public string FullPath { get { return $"{Folder}\\{FileName}"; } }
 
         internal object _missing = System.Reflection.Missing.Value;
 

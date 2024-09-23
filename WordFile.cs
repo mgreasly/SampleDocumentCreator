@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System;
+using System.IO;
 
 namespace SampleDocumentCreator
 {
@@ -59,6 +60,12 @@ namespace SampleDocumentCreator
                 object address = LinkGenerator.RandomLink();
                 var link = _doc.Hyperlinks.Add(range, ref address);
             }
+        }
+
+        public string SaveArticleToFile(string path)
+        {
+            this.Folder = path;
+            return SaveArticleToFile();
         }
 
         public string SaveArticleToFile()

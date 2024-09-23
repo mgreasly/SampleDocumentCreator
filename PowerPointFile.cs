@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using System;
+using System.IO;
 
 namespace SampleDocumentCreator
 {
@@ -48,6 +49,12 @@ namespace SampleDocumentCreator
 
         public void AddLinks()
         {
+        }
+
+        public string SaveArticleToFile(string path)
+        {
+            this.Folder = path;
+            return SaveArticleToFile();
         }
 
         public string SaveArticleToFile()
