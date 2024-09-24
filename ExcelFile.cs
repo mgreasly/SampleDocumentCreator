@@ -1,6 +1,5 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
-using System.IO;
 using System.Linq;
 
 namespace SampleDocumentCreator

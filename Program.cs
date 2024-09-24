@@ -7,7 +7,7 @@ namespace SampleDocumentCreator
     {
         static void Main(string[] args)
         {
-            var path = @"C:\Users\marcus.greasly\Desktop\Sample Documents\2024-09-23";
+            var path = args[0];
             GenerateArticles(2, path);
             Console.WriteLine("Done...");
             Console.ReadKey();

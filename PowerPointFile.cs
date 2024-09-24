@@ -1,7 +1,6 @@
 ﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using System;
-using System.IO;
 
 namespace SampleDocumentCreator
 {
@@ -16,6 +15,7 @@ namespace SampleDocumentCreator
             if (_ppt == null)
             {
                 _ppt = new Application();
+                _ppt.Visible = MsoTriState.msoTrue;
             }
         }
 

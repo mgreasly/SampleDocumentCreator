@@ -7,6 +7,7 @@ namespace SampleDocumentCreator
     public class ArticleExtract
     {
         public string Title { get; set; } = string.Empty;
+
         public string Extract { get; set; } = string.Empty;
 
         public static ArticleExtract DownloadWikiArticle()

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System;
-using System.IO;
 
 namespace SampleDocumentCreator
 {
